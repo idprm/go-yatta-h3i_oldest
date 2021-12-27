@@ -7,6 +7,6 @@ import (
 
 func Setup(app *fiber.App) {
 	api := app.Group("api")
-	admin := api.Group("admin")
-	admin.Post("/api/admin/register", controllers.Register)
+	v1 := api.Group("v1")
+	v1.Post("/admin/register", controllers.Register)
 }
