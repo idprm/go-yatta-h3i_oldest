@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Subscription struct {
 	Id               uint64
 	Msisdn           int
@@ -10,6 +12,10 @@ type Subscription struct {
 	SubKeywork       string
 	ChannelSubscribe string
 	IsActive         bool
-	SubscribedFrom   []byte
-	SubscribedUntil  []byte
+	MsgTimestamp     time.Time
+	RenewalAt        time.Time
+	ConfirmAt        time.Time
+	PurgeAt          time.Time
+	CreatedAt        time.Time
+	UpdatedAt        time.Time
 }
