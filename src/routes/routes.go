@@ -6,6 +6,7 @@ import (
 )
 
 func Setup(app *fiber.App) {
+	// grouping
 	api := app.Group("/api")
 	v1 := api.Group("/v1")
 
@@ -14,6 +15,6 @@ func Setup(app *fiber.App) {
 	**	GET /api/v1/moh3i
 	**	GET /api/v1/drh3i
 	*******************************************/
-	v1.Get("/moh3i", controllers.IncomeMessageOriginated)
-	v1.Get("/drh3i", controllers.IncomeDeliveryReport)
+	v1.Get("/moh3i", controllers.HandlerMessageOriginated)
+	v1.Get("/drh3i", controllers.HandlerDeliveryReport)
 }

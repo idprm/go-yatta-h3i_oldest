@@ -1,8 +1,14 @@
 package controllers
 
 import (
+	"log"
+	"net/url"
+	"strings"
+
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
+	"waki.mobi/go-yatta-h3i/src/database"
+	"waki.mobi/go-yatta-h3i/src/models"
 )
 
 type MessageOriginated struct {
@@ -33,9 +39,9 @@ func ValidateStruct(mo MessageOriginated) []*ErrorResponse {
 	return errors
 }
 
-func IncomeMessageOriginated(c *fiber.Ctx) error {
+func HandlerMessageOriginated(c *fiber.Ctx) error {
 
-	mo := new(MessageOriginated)
+	// mo := new(MessageOriginated)
 
 	// if msisdn := c.Query("mobile_no"); msisdn != "" {
 
@@ -43,16 +49,43 @@ func IncomeMessageOriginated(c *fiber.Ctx) error {
 	// if shortcode := c.Query("short_code"); shortcode != "" {
 
 	// }
-	// if message := c.Query("message"); message != "" {
 
-	// }
+	// GET MESSAGE (SMS)
+	message := c.Query("message")
 
-	errors := ValidateStruct(*mo)
-
-	if errors != nil {
-		return c.JSON(errors)
-
+	// DECODE VALUE
+	decodedValue, err := url.QueryUnescape(message)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	return c.JSON(fiber.Map{"message": "ok"})
+	var word string
+	// SPLIT VALUES
+	subKey := strings.Split(decodedValue, " ")
+
+	// CONDITION IF KEYWORD IS EMPTY
+	if len(subKey) < 3 {
+		return c.JSON(fiber.Map{"message": "keyword empty"})
+	} else {
+		word = subKey[2]
+	}
+
+	// errors := ValidateStruct(*mo)
+
+	// if errors != nil {
+	// 	return c.JSON(errors)
+	// }
+
+	// SELECT ON TABLE KEYWORD
+	var keyword models.Keyword
+	database.DB.Where("name = ?", word).First(&keyword)
+
+	// if keyword.Id == 0 {
+	// 	c.Status(fiber.StatusBadRequest)
+	// 	return c.JSON(fiber.Map{
+	// 		"message": "Invalid Credentials",
+	// 	})
+	// }
+
+	return c.JSON(fiber.Map{"message": keyword})
 }

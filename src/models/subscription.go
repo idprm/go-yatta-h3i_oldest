@@ -16,6 +16,4 @@ type Subscription struct {
 	RenewalAt        time.Time
 	ConfirmAt        time.Time
 	PurgeAt          time.Time
-	CreatedAt        time.Time
-	UpdatedAt        time.Time
 }

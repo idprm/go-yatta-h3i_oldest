@@ -5,6 +5,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func Connect(dsn string) {
 
 	_, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
