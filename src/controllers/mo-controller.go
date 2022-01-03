@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"log"
 	"net/url"
 	"strings"
 
@@ -41,51 +40,37 @@ func ValidateStruct(mo MessageOriginated) []*ErrorResponse {
 
 func HandlerMessageOriginated(c *fiber.Ctx) error {
 
-	// mo := new(MessageOriginated)
+	// SET HEADER
+	c.Accepts("text/plain")
+	c.AcceptsCharsets("utf-8", "iso-8859-1")
+	c.Set("Content-Type", "text/plain")
 
-	// if msisdn := c.Query("mobile_no"); msisdn != "" {
+	// QUERY PARAM ON GET METHOD
+	// msisdn := c.Query("mobile_no")
+	// shortcode := c.Query("short_code")
 
-	// }
-	// if shortcode := c.Query("short_code"); shortcode != "" {
+	// GET MESSAGE (SMS) TO DECODE VALUE
+	decodedMessage, _ := url.QueryUnescape(c.Query("message"))
 
-	// }
-
-	// GET MESSAGE (SMS)
-	message := c.Query("message")
-
-	// DECODE VALUE
-	decodedValue, err := url.QueryUnescape(message)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var word string
+	var kewordThree string
 	// SPLIT VALUES
-	subKey := strings.Split(decodedValue, " ")
+	subKey := strings.Split(decodedMessage, " ")
 
 	// CONDITION IF KEYWORD IS EMPTY
 	if len(subKey) < 3 {
-		return c.JSON(fiber.Map{"message": "keyword empty"})
+		return c.JSON(fiber.Map{"message": "not valid message"})
 	} else {
-		word = subKey[2]
+		// REG OR UNREG
+		// keyWordOne = subKey[0]
+		// // SERVICE
+		// keywordTwo = subKey[1]
+		// ADNET
+		kewordThree = subKey[2]
 	}
-
-	// errors := ValidateStruct(*mo)
-
-	// if errors != nil {
-	// 	return c.JSON(errors)
-	// }
 
 	// SELECT ON TABLE KEYWORD
 	var keyword models.Keyword
-	database.DB.Where("name = ?", word).First(&keyword)
-
-	// if keyword.Id == 0 {
-	// 	c.Status(fiber.StatusBadRequest)
-	// 	return c.JSON(fiber.Map{
-	// 		"message": "Invalid Credentials",
-	// 	})
-	// }
-
-	return c.JSON(fiber.Map{"message": keyword})
+	database.DB.Where("name = ?", kewordThree).First(&keyword)
+	c.Status(200)
+	return c.JSON(fiber.Map{"message": "OK"})
 }

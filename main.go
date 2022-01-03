@@ -4,21 +4,20 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"waki.mobi/go-yatta-h3i/src/config"
 	"waki.mobi/go-yatta-h3i/src/database"
 	"waki.mobi/go-yatta-h3i/src/routes"
 )
 
 func init() {
 	// load config
-	config, err := config.SetupConfig(".")
+	// config, err := config.SetupConfig(".")
 
-	if err != nil {
-		log.Fatal("cannot load config:", err)
-	}
+	// if err != nil {
+	// 	log.Fatal("cannot load config:", err)
+	// }
 
 	// connect to database
-	database.Connect(config.DBSource)
+	database.Connect()
 
 	// connect to redis
 	database.SetupRedis()

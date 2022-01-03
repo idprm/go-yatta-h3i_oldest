@@ -1,9 +1,11 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Subscription struct {
-	Id               uint64
+	Id               uint64 `gorm:"primary_key"`
 	Msisdn           int
 	Service          string
 	Adn              string
