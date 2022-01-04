@@ -58,7 +58,7 @@ func HandlerMessageOriginated(c *fiber.Ctx) error {
 
 	// CONDITION IF KEYWORD IS EMPTY
 	if len(subKey) < 3 {
-		return c.JSON(fiber.Map{"message": "not valid message"})
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": "not valid message"})
 	} else {
 		// REG OR UNREG
 		// keyWordOne = subKey[0]
