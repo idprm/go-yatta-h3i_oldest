@@ -16,3 +16,7 @@ type Transact struct {
 	Price        string `gorm:"PRICE"`
 	SubmitedId   string `gorm:"SUBMITEDID"`
 }
+
+func (Transact) TableName() string {
+	return "transact"
+}

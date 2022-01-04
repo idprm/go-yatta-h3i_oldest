@@ -19,3 +19,7 @@ type Subscription struct {
 	ConfirmAt        time.Time
 	PurgeAt          time.Time
 }
+
+func (Subscription) TableName() string {
+	return "subscription"
+}

@@ -5,3 +5,7 @@ type Word struct {
 	Slug string
 	Name string
 }
+
+func (Word) TableName() string {
+	return "words"
+}

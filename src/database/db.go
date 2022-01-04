@@ -5,20 +5,30 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
-var DB *gorm.DB
-var err error
+type DbInstance struct {
+	Db *gorm.DB
+}
 
-func Connect() *gorm.DB {
+var Database DbInstance
+
+func Connect() {
 	dsn := "root:password@tcp(127.0.0.1:3306)/yatta_h3i?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		log.Fatalf("unable to connect to database: %s", err.Error())
+		log.Fatal("Failed to connect to the database! \n", err)
 		panic("Could not connect with the database!")
-
 	}
 
-	return db
+	log.Println("Connected to database successfully")
+	// DEBUG ON CONSOLE
+	db.Logger = logger.Default.LogMode(logger.Info)
+	// TODO: Add migrations
+
+	Database = DbInstance{
+		Db: db,
+	}
 }

@@ -70,7 +70,6 @@ func HandlerMessageOriginated(c *fiber.Ctx) error {
 
 	// SELECT ON TABLE KEYWORD
 	var keyword models.Keyword
-	database.DB.Where("name = ?", kewordThree).First(&keyword)
-	c.Status(200)
-	return c.JSON(fiber.Map{"message": "OK"})
+	database.Database.Db.Where("name = ?", kewordThree).First(&keyword)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": keyword.Adnet})
 }
